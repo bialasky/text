@@ -1,5 +1,5 @@
-const THUMB_WIDTH = 16;
-const START_OFFSET = THUMB_WIDTH / 2;
+const HALF_THUMB_WIDTH = 16;
+const START_OFFSET = HALF_THUMB_WIDTH / 2;
 const MARKER_VALUES = [1000, 10000, 20000, 30000, 40000, 50000];
 
 const createThumb = () => {
@@ -13,7 +13,7 @@ const calculatePosition = (value, slider) => {
   const range = slider.max - slider.min;
   return (
     ((value - slider.min) / range) *
-      (100 - (THUMB_WIDTH * 100) / slider.offsetWidth) +
+      (100 - (HALF_THUMB_WIDTH * 100) / slider.offsetWidth) +
     (START_OFFSET * 100) / slider.offsetWidth
   );
 };
