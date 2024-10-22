@@ -433,7 +433,7 @@ button {
   display: flex;
   font-size: 20px;
   justify-content: space-between;
-  align-items: flex-start;
+  align-items: center;
   gap: 16px;
   cursor: pointer;
 }
@@ -446,6 +446,8 @@ button {
 }
 
 .toggle-btn {
+  width: 20px;
+  height: 20px;
   position: relative;
   background: none;
   border: none;
@@ -453,7 +455,6 @@ button {
   cursor: pointer;
   color: #666;
   flex-shrink: 0;
-  margin-top: 12px;
 }
 
 .toggle-btn::after,
