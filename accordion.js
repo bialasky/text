@@ -1,65 +1,75 @@
-function accordion() {
-  const tabButtons = document.querySelectorAll(".tab-btn");
-  const faqItems = document.querySelectorAll(".faq-item");
-  const faqList = document.querySelector(".faq-list");
+const createAccordion = () => {
+  const elements = {
+    tabButtons: document.querySelectorAll(".tab-btn"),
+    faqItems: document.querySelectorAll(".faq-item"),
+    faqList: document.querySelector(".faq-list"),
+    allFaqItems: Array.from(document.querySelectorAll(".faq-item")),
+  };
 
-  const allFaqItems = Array.from(faqItems);
-
-  function handleTabClick(e) {
-    tabButtons.forEach((btn) => btn.classList.remove("active"));
-
+  const handleTabClick = (e) => {
+    elements.tabButtons.forEach((btn) => btn.classList.remove("active"));
     e.target.classList.add("active");
 
     const category = e.target.textContent.trim();
     filterFAQs(category);
-  }
+  };
 
-  function filterFAQs(category) {
-    faqList.innerHTML = "";
+  const filterFAQs = (category) => {
+    if (!elements.faqList) return;
+    elements.faqList.innerHTML = "";
 
-    if (category === "All") {
-      allFaqItems.forEach((item) => {
-        faqList.appendChild(item.cloneNode(true));
-      });
-    } else {
-      const filteredItems = allFaqItems.filter((item) => {
-        return item.getAttribute("data-category") === category;
-      });
+    const itemsToShow =
+      category === "All"
+        ? elements.allFaqItems
+        : elements.allFaqItems.filter(
+            (item) => item.getAttribute("data-category") === category
+          );
 
-      filteredItems.forEach((item) => {
-        faqList.appendChild(item.cloneNode(true));
-      });
-    }
+    itemsToShow.forEach((item) => {
+      elements.faqList.appendChild(item.cloneNode(true));
+    });
 
     attachFAQClickHandlers();
-  }
+  };
 
-  function handleFAQClick(e) {
+  const handleFAQClick = (e) => {
     const faqItem = e.currentTarget.closest(".faq-item");
+    if (!faqItem) return;
 
-    const allItems = document.querySelectorAll(".faq-item");
-    allItems.forEach((item) => {
+    document.querySelectorAll(".faq-item").forEach((item) => {
       if (item !== faqItem) {
         item.classList.remove("open");
       }
     });
 
     faqItem.classList.toggle("open");
-  }
+  };
 
-  function attachFAQClickHandlers() {
-    const questions = document.querySelectorAll(".faq-question");
-    questions.forEach((question) => {
+  const attachFAQClickHandlers = () => {
+    document.querySelectorAll(".faq-question").forEach((question) => {
       question.addEventListener("click", handleFAQClick);
     });
-  }
+  };
 
-  tabButtons.forEach((button) => {
-    button.addEventListener("click", handleTabClick);
-  });
+  const init = () => {
+    elements.tabButtons.forEach((button) => {
+      button.addEventListener("click", handleTabClick);
+    });
 
-  // Initial setup
-  attachFAQClickHandlers();
-}
+    attachFAQClickHandlers();
 
-export default accordion;
+    return () => {
+      elements.tabButtons.forEach((button) => {
+        button.removeEventListener("click", handleTabClick);
+      });
+
+      document.querySelectorAll(".faq-question").forEach((question) => {
+        question.removeEventListener("click", handleFAQClick);
+      });
+    };
+  };
+
+  return init();
+};
+
+export default createAccordion;

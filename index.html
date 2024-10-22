@@ -16,6 +16,10 @@
         <a href="/">
           <img class="logo" src="/logo.png" alt="Vite Logo" />
         </a>
+        <button class="mobile-menu">
+          <span></span>
+          <span></span>
+        </button>
         <ul class="navigation-items">
           <li><a href="/features">Features</a></li>
           <li><a href="/about">Pricing</a></li>
@@ -24,6 +28,14 @@
         </ul>
       </div>
     </nav>
+    <div class="sidebar-header">
+      <ul class="sidebar-nav">
+        <li><a href="/features">Features</a></li>
+        <li><a href="/about">Pricing</a></li>
+        <li><a href="/services">Blog</a></li>
+        <li><a href="/contact">Log in</a></li>
+      </ul>
+    </div>
     <section>
       <div class="container container-header">
         <div class="header">
@@ -43,10 +55,15 @@
     </section>
     <section class="bg-dark overflow-hidden">
       <div class="container container-counter">
-        <div class="slider-container">
+        <div class="slider-header-container">
           <h2 class="white-font h2-counter">
             See how many hours you can save by using Ticket
           </h2>
+          <div class="btn-container btn-container-slider">
+            <button class="btn-secondary">Get started</button>
+          </div>
+        </div>
+        <div class="slider-container">
           <div class="range-wrapper">
             <div class="tooltip" id="tooltip">1000 tickets</div>
             <input
@@ -240,7 +257,16 @@
     <footer class="footer">
       <div class="container">
         <a href="/">
-          <img class="logo footer-logo" src="/logo-dark.png" alt="Vite Logo" />
+          <img
+            class="logo footer-logo hide-mobile"
+            src="/logo-dark.png"
+            alt="Vite Logo"
+          />
+          <img
+            class="logo footer-logo hide-desktop"
+            src="/different-dark-logo-lol.png"
+            alt="Vite Logo"
+          />
         </a>
         <div class="footer-grid">
           <!-- Brand and Newsletter -->

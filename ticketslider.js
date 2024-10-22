@@ -1,61 +1,84 @@
-function ticketSlider() {
-  const slider = document.getElementById("ticketSlider");
-  const tooltip = document.getElementById("tooltip");
-  const timeDisplay = document.getElementById("timeCalc");
-  const markersContainer = document.getElementById("markers");
-  const THUMB_WIDTH = 16;
-  const START_OFFSET = THUMB_WIDTH / 2;
+const THUMB_WIDTH = 16;
+const START_OFFSET = THUMB_WIDTH / 2;
+const MARKER_VALUES = [1000, 10000, 20000, 30000, 40000, 50000];
 
+const createThumb = () => {
   const thumb = document.createElement("div");
   thumb.className = "slider-thumb";
-  slider.parentNode.appendChild(thumb);
+  document.getElementById("ticketSlider")?.parentNode?.appendChild(thumb);
+  return thumb;
+};
 
-  const markerValues = [1000, 10000, 20000, 30000, 40000, 50000];
+const calculatePosition = (value, slider) => {
+  const range = slider.max - slider.min;
+  return (
+    ((value - slider.min) / range) *
+      (100 - (THUMB_WIDTH * 100) / slider.offsetWidth) +
+    (START_OFFSET * 100) / slider.offsetWidth
+  );
+};
 
-  markerValues.forEach((value) => {
+const calculateTime = (tickets) => {
+  const minutes = tickets * 10;
+  const hours = Math.floor(minutes / 60);
+  const remainingMinutes = minutes % 60;
+  return `${hours}h ${remainingMinutes}m`;
+};
+
+const createMarkers = (markersContainer, slider) => {
+  MARKER_VALUES.forEach((value) => {
     const label = document.createElement("div");
     label.className = "marker-label";
     label.textContent = value.toLocaleString();
 
-    const range = slider.max - slider.min;
-    const position =
-      ((value - slider.min) / range) *
-        (100 - (THUMB_WIDTH * 100) / slider.offsetWidth) +
-      (START_OFFSET * 100) / slider.offsetWidth;
+    const position = calculatePosition(value, slider);
     label.style.left = `${position}%`;
 
-    markersContainer.appendChild(label);
+    markersContainer?.appendChild(label);
   });
+};
 
-  function calculateTime(tickets) {
-    const minutes = tickets * 10;
-    const hours = Math.floor(minutes / 60);
-    const remainingMinutes = minutes % 60;
-    return `${hours}h ${remainingMinutes}m`;
-  }
+const ticketSlider = () => {
+  const elements = {
+    slider: document.getElementById("ticketSlider"),
+    tooltip: document.getElementById("tooltip"),
+    timeDisplay: document.getElementById("timeCalc"),
+    markersContainer: document.getElementById("markers"),
+    thumb: createThumb(),
+  };
 
-  function updateSlider() {
+  const updateSlider = () => {
+    const { slider, tooltip, timeDisplay, thumb } = elements;
+    if (!slider || !tooltip || !timeDisplay || !thumb) return;
+
     const value = parseInt(slider.value);
     tooltip.textContent = `${value.toLocaleString()} tickets`;
     timeDisplay.textContent = calculateTime(value);
 
-    const range = slider.max - slider.min;
-    const position =
-      ((value - slider.min) / range) *
-        (100 - (THUMB_WIDTH * 100) / slider.offsetWidth) +
-      (START_OFFSET * 100) / slider.offsetWidth;
+    const position = calculatePosition(value, slider);
 
     tooltip.style.left = `${position}%`;
     thumb.style.left = `${position}%`;
-
     slider.style.setProperty("--progress", `${position}%`);
-  }
+  };
 
-  updateSlider();
+  const init = () => {
+    const { slider, markersContainer } = elements;
+    if (!slider || !markersContainer) return;
 
-  slider.addEventListener("input", updateSlider);
+    createMarkers(markersContainer, slider);
+    updateSlider();
 
-  window.addEventListener("resize", updateSlider);
-}
+    slider.addEventListener("input", updateSlider);
+    window.addEventListener("resize", updateSlider);
+
+    return () => {
+      slider.removeEventListener("input", updateSlider);
+      window.removeEventListener("resize", updateSlider);
+    };
+  };
+
+  return init();
+};
 
 export default ticketSlider;
