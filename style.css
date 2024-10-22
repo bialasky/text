@@ -409,6 +409,7 @@ button {
   margin-bottom: 70px;
   @media screen and (max-width: 968px) {
     margin-bottom: 32px;
+    padding: 0;
   }
 }
 
