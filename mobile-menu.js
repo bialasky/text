@@ -5,6 +5,12 @@ function mobileMenu() {
   mobileMenuBtn.addEventListener("click", () => {
     sidebar.classList.toggle("open");
   });
+
+  return () => {
+    mobileMenuBtn.removeEventListener("click", () => {
+      sidebar.classList.toggle("open");
+    });
+  };
 }
 
 export default mobileMenu;
