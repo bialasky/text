@@ -32,6 +32,9 @@ h1 {
   line-height: 1.1;
   letter-spacing: -2px;
   font-weight: 500;
+  @media screen and (max-width: 768px) {
+    font-size: 36px;
+  }
 }
 
 h2 {
@@ -57,13 +60,6 @@ a {
   max-width: 1248px;
   padding: 0 16px;
   margin: 0 auto;
-}
-
-#app {
-  max-width: 1248px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
 }
 
 /* Navigation */
